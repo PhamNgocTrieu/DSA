@@ -5,28 +5,29 @@
 // #include <stddef.h> // for offsetof macro
 
 typedef enum {
-LIST_SUCCESS = 0,
-LIST_ERROR,
-LIST_EMTPY,
-LIST_NOT_FOUND,
-LIST_NULL_POINTER,
-LIST_OUT_OF_MEMORY,
-LIST_FULL
+	LIST_SUCCESS = 0,
+	LIST_ERROR,
+	LIST_EMTPY,
+	LIST_NOT_FOUND,
+	LIST_NULL_POINTER,
+	LIST_OUT_OF_MEMORY,
+	LIST_FULL
 } LSTATUS;
 
 typedef struct list_head {
-struct list_head *next, *prev;
+	struct list_head *next, *prev;
 } list_head;
 
 typedef struct List List;
 struct List {
-list_head *head;
-LSTATUS (*insert)(list_head *new, list_head *prev, list_head *next);
-LSTATUS (*push_back)(List *const me, list_head *new);
-LSTATUS (*push_front)(List *const me, list_head *new);
-LSTATUS (*pop_back)(List *const me);
-LSTATUS (*pop_front)(List *const me);
-int (*empty)(List *const me);
+	list_head *head;
+	LSTATUS (*insert)(list_head *new, list_head *prev, list_head *next);
+	LSTATUS (*push_back)(List *const me, list_head *new);
+	LSTATUS (*push_front)(List *const me, list_head *new);
+	void (*pop_back)(List *const me);
+	void (*pop_front)(List *const me);
+	void (*erase)(list_head *pos);
+	int (*empty)(List *const me);
 };
 
 void List_Create(List *const me);
@@ -36,10 +37,6 @@ void List_Create(List *const me);
  * @list: the entry to test
  * @head: the head of the list
  */
-// static inline int list_is_head(const struct list_head *list, const struct list_head *head)
-// {
-// 	return list == head;
-// }
 #define list_is_head(list, head) \
     ((list) == (head))
 
@@ -47,9 +44,6 @@ void List_Create(List *const me);
  * list_empty - tests whether a list is empty
  * @head: the list to test.
  */
-// static inline int list_empty(struct list_head *head) {
-//     return head->next == head;
-// }
 #define list_empty(head) \
     ((head)->next == (head))
 
